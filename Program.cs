@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 using COM.Controller;
 using COM.View;
+using COM.Model;
 
 namespace COM
 {
@@ -15,7 +16,6 @@ namespace COM
      * Implementing MVC.
      * 
      */
-
     static class Program
     {
         /// <summary>
@@ -24,17 +24,12 @@ namespace COM
         [STAThread]
         static void Main()
         {
-            
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
-
-            /*
             MainForm StartForm = new MainForm();
 
-            ComController myController = new ComController(StartForm);
+            ComController myController = new ComController(StartForm, new Datamanipulation());
+            StartForm.SetController(myController);
             StartForm.ShowDialog();
-            */
+            
         }
     }
 }

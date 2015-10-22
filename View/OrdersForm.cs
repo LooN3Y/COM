@@ -19,12 +19,12 @@ namespace COM.View
         {
             InitializeComponent();
         }
-        /*
+        
         public OrdersForm(ComController cont) : this()
         {
             this._controller = cont;
         }
-        */
+        
 
 
         private void populateDgv()

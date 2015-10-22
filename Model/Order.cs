@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace COM.Model
 {
-    class Order
+    public class Order 
     {
         private int _id;
         public int OrderID

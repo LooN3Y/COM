@@ -13,13 +13,19 @@ using COM.Model;
 
 namespace COM.View
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IView
     {
         private ComController _controller;
+        public event ViewHandler<IView> changed;
 
         public MainForm()
         {
             InitializeComponent();
+        }
+
+        public void SetController(ComController controller)
+        {
+            this._controller = controller;
         }
 
 
@@ -41,11 +47,16 @@ namespace COM.View
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            _controller = new ComController();
             _controller.LoadFiles();
 
             this.populateDgv();
         }
+
+        #endregion ==============================================================
+
+
+        #region =====================================|  Button events  |=========
+
 
         // Menu Quit button:
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -60,6 +71,9 @@ namespace COM.View
         // Populates the data of the selected customer GroupBox:
         private void customersDgv_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+
+            // Clear the responce label
+            this.responceLbl.Text = "";
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = this.customersDgv.Rows[e.RowIndex];
@@ -103,7 +117,7 @@ namespace COM.View
                 else
                 {
                     this.responceLbl.ForeColor = System.Drawing.Color.Red;
-                    this.responceLbl.Text = "Customer with this ID already exists!";
+                    this.responceLbl.Text = "Customer with ID: " + newCust.ID + " already exists!";
                 }
             }
             else
@@ -143,7 +157,7 @@ namespace COM.View
                 else
                 {
                     this.responceLbl.ForeColor = System.Drawing.Color.Red;
-                    this.responceLbl.Text = "Customer with this ID does not exist!";
+                    this.responceLbl.Text = "Customer with ID: " + cust.ID + " does not exist!";
                 }
             }
             else
@@ -170,8 +184,8 @@ namespace COM.View
                 {
                     this.responceLbl.ForeColor = System.Drawing.Color.Black;
                     this.responceLbl.Text = "";
-                    
-                    if (MessageBox.Show("Are you sure you want to delete this customer?\n\r    - ID: " + oldCust.ID 
+
+                    if (MessageBox.Show("Are you sure you want to delete this customer?\n\r    - ID: " + oldCust.ID
                                                                                     + "\n\r    - Name: " + oldCust.Name
                                                                                     + "\n\r    - Phone: " + oldCust.Phone
                                                                                     + "\n\r    - Address: " + oldCust.Address
@@ -187,7 +201,7 @@ namespace COM.View
                 else
                 {
                     this.responceLbl.ForeColor = System.Drawing.Color.Red;
-                    this.responceLbl.Text = "Customer with this ID does not exist!";
+                    this.responceLbl.Text = "Customer with ID: " + oldCust.ID + " does not exist!";
                 }
             }
             else
@@ -199,6 +213,6 @@ namespace COM.View
 
 
         #endregion ==============================================================
-        
+
     }
 }

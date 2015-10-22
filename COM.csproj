@@ -46,7 +46,10 @@
   <ItemGroup>
     <Compile Include="Controller\ComController.cs" />
     <Compile Include="Model\Customer.cs" />
+    <Compile Include="Model\Datamanipulation.cs" />
+    <Compile Include="Model\IModel.cs" />
     <Compile Include="Model\Order.cs" />
+    <Compile Include="View\IView.cs" />
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

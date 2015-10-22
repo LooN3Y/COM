@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using System.IO;
 
 using COM.Model;
+using COM.View;
 
 namespace COM.Controller
 {
-    class ComController
+    public class ComController
     {
         private string _customerFilePath, _orderFilePath;
         public string CustomerFilePath
@@ -49,11 +50,17 @@ namespace COM.Controller
             }
         }
 
+        IView _myView; IModel _myModel;
 
         public ComController()
         {
             this._customerFilePath = "customers.txt";
             this._orderFilePath = "orders.txt";
+        }
+        public ComController(IView v, IModel m) : this()
+        {
+            this._myView = v;
+            this._myModel = m;
         }
 
 
@@ -71,6 +78,9 @@ namespace COM.Controller
         // Method that saves any changes to our local lists to the source files.
         public void SaveData()
         {
+            this._myModel.SaveData();
+
+
             // Sort the local lists:
             List<Customer> custSorted = this.CustomersList.OrderBy(o => o.ID).ToList();
             List<Order> ordSorted = this.OrdersList.OrderBy(o => o.OrderID).ToList();
@@ -120,13 +130,6 @@ namespace COM.Controller
         // Method that adds a Customer to the list.
         public void CreateCustomer(Customer customerToCreate)
         {
-            /*
-            if (this.FindCustomer(customerToCreate) == null)
-                this.CustomersList.Add(customerToCreate);
-            else
-                throw new Exception("Customer Allready Exists.");
-            this.Save();
-            */
             this.CustomersList.Add(customerToCreate);
             this.SaveData();
         }
@@ -136,31 +139,19 @@ namespace COM.Controller
         public Customer FindCustomer(Customer customerToFind)
         {
             Customer customer = null;
-
+            
             foreach (Customer cust in this.CustomersList)
             {
                 if (cust.ID == customerToFind.ID)
                     return cust;
             }
+            
             return customer;
         }
 
         // Method that updates an existing customer's info.
         public void UpdateCustomer(Customer customerToUpdate)
         {
-            /*
-            Customer oldCustomer = this.FindCustomer(customerToUpdate);
-            if (oldCustomer != null)
-            {
-                oldCustomer.ID = customerToUpdate.ID;
-                oldCustomer.Name = customerToUpdate.Name;
-                oldCustomer.Phone = customerToUpdate.Phone;
-                oldCustomer.Address = customerToUpdate.Address;
-            }
-            else
-                throw new Exception("Customer does not exist.");
-            this.Save();
-            */
             Customer oldCustomer = this.FindCustomer(customerToUpdate);
             if (oldCustomer != null)
             {
@@ -176,13 +167,6 @@ namespace COM.Controller
 
         public void DeleteCustomer(Customer customerToDelete)
         {
-            /*
-            if (this.FindCustomer(customerToDelete) != null)
-                this.CustomersList.Remove(customerToDelete);
-            else
-                throw new Exception("Customer does not exist.");
-            this.Save();
-            */
             this.CustomersList.Remove(customerToDelete);
             this.SaveData();
         }
