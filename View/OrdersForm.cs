@@ -29,8 +29,8 @@ namespace COM.View
 
         private void populateDgv()
         {
-            if (this._controller.OrdersList != null)
-                this.ordersDgv.DataSource = this._controller.OrdersList;
+            if (this._controller.ReturnOrderList() != null)
+                this.ordersDgv.DataSource = this._controller.ReturnOrderList();
             else
                 throw new Exception("Local order's list is null.");
         }

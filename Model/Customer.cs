@@ -67,5 +67,17 @@ namespace COM.Model
             this.Phone = customerPhone;
             this.Address = customerAddress;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (!(obj is Customer))
+                return false;
+            return this._id == ((Customer)obj)._id &&
+                    this._name == ((Customer)obj)._name &&
+                    this._phone == ((Customer)obj)._phone &&
+                    this._address == ((Customer)obj)._address;
+        }
     }
 }

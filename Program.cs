@@ -27,7 +27,6 @@ namespace COM
             MainForm StartForm = new MainForm();
 
             ComController myController = new ComController(StartForm, new Datamanipulation());
-            StartForm.SetController(myController);
             StartForm.ShowDialog();
             
         }

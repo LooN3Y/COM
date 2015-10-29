@@ -52,5 +52,16 @@ namespace COM.Model
             this.CustomerID = customerId;
             this.Details = details;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (!(obj is Order))
+                return false;
+            return this._id == ((Order)obj)._id &&
+                    this._custId == ((Order)obj)._custId &&
+                    this._details == ((Order)obj)._details;
+        }
     }
 }

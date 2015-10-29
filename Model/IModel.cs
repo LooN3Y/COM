@@ -6,19 +6,23 @@ using System.Threading.Tasks;
 
 namespace COM.Model
 {
-    public delegate void ModelHandler<IView>(IView sender, myModelEventArgs e);
+    public delegate void ModelHandler<IModel>(IModel sender, myModelEventArgs e);
 
     public class myModelEventArgs: EventArgs
     {
-        IModel _passingobject;
-        public myModelEventArgs(IModel obj)
+        Customer _passingCustomer;
+        Order _passingOrder;
+
+        public myModelEventArgs(Customer cust, Order ord)
         {
-            this._passingobject = obj;
+            this._passingCustomer = cust;
+            this._passingOrder = ord;
         }
     }
 
     public interface IModel
     {
+        void LoadFiles();
         void SaveData();
     }
 }

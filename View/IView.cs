@@ -14,16 +14,18 @@ namespace COM.View
 
     public class myViewEventArgs : EventArgs
     {
-        IModel _passingObject;
-        public myViewEventArgs(IModel value)
+        Customer _passingCustomer;
+        Order _passingOrder;
+        public myViewEventArgs(Customer cust, Order ord)
         {
-            this._passingObject = value;
+            this._passingCustomer = cust;
+            this._passingOrder = ord;
         }
     }
 
     public interface IView
     {
         void SetController(ComController controller);
-        event ViewHandler<IView> changed;
+        event ViewHandler<IView> viewChanged;
     }
 }

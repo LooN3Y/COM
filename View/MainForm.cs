@@ -16,7 +16,7 @@ namespace COM.View
     public partial class MainForm : Form, IView
     {
         private ComController _controller;
-        public event ViewHandler<IView> changed;
+        public event ViewHandler<IView> viewChanged;
 
         public MainForm()
         {
@@ -28,19 +28,13 @@ namespace COM.View
             this._controller = controller;
         }
 
-
-        #region ====================================|  Data Functions  |=========
-
         private void populateDgv()
         {
-            if (this._controller.CustomersList != null)
-                this.customersDgv.DataSource = this._controller.CustomersList;
+            if (this._controller.ReturnCustomerList() != null)
+                this.customersDgv.DataSource = this._controller.ReturnCustomerList().ToArray();
             else
                 throw new Exception("Local customer's list is null.");
         }
-
-
-        #endregion ==============================================================
 
 
         #region =======================================|  Form events  |=========
@@ -50,6 +44,22 @@ namespace COM.View
             _controller.LoadFiles();
 
             this.populateDgv();
+        }
+
+        /*
+         * Event that is fired by the model and contains the changes happened there. Asks our datagridview to update.
+         * 
+         */
+        public void ModelChangedEvent(IModel sender, myModelEventArgs changes)
+        {
+            /*
+             * Code to update form, according to changes in model!
+             * f.e: new customer, update dgv.
+             * 
+             * "changes" contains the changes that happened in the model
+            */
+            this.populateDgv();
+
         }
 
         #endregion ==============================================================
@@ -113,6 +123,9 @@ namespace COM.View
 
                     // CALL the controller's Create-Customer Function:
                     this._controller.CreateCustomer(newCust);
+
+                    // Fire Event with the new customer added
+                    viewChanged.Invoke(this, new myViewEventArgs(newCust, null));
                 }
                 else
                 {
@@ -152,6 +165,9 @@ namespace COM.View
                     {
                         // CALL the controller's Update-Customer Function:
                         this._controller.UpdateCustomer(cust);
+
+                        // Fire Event with the customer to update
+                        viewChanged.Invoke(this, new myViewEventArgs(cust, null));
                     }
                 }
                 else
@@ -196,6 +212,9 @@ namespace COM.View
                     {
                         // CALL the controller's Customer-Delete function:
                         this._controller.DeleteCustomer(oldCust);
+
+                        // Fire Event with the customer to delete
+                        viewChanged.Invoke(this, new myViewEventArgs(oldCust, null));
                     }
                 }
                 else
